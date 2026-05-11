@@ -1,6 +1,6 @@
 
 ### Register User
-POST http://localhost:4000/auth/users
+POST https://blog-app-ab9f.onrender.com/auth/users
 Content-Type: application/json
 
 {
@@ -14,7 +14,7 @@ Content-Type: application/json
 
 
 ### Create new Article
-POST http://localhost:4000/author-api/article
+POST https://blog-app-ab9f.onrender.com/author-api/article
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 
 
 ### Author Login
-POST http://localhost:4000/auth/login
+POST https://blog-app-ab9f.onrender.com/auth/login
 Content-Type: application/json
 
 {
@@ -38,14 +38,14 @@ Content-Type: application/json
 
 
 ### Author logout
-GET http://localhost:4000/auth/logout
+GET https://blog-app-ab9f.onrender.com/auth/logout
 
 
 ### Read own articles
-GET http://localhost:4000/author-api/articles
+GET https://blog-app-ab9f.onrender.com/author-api/articles
 
 ### Update article by author
-PUT http://localhost:4000/author-api/articles
+PUT https://blog-app-ab9f.onrender.com/author-api/articles
 Content-Type: application/json
 
 {
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 
 ### Delete / restore anarticle by Article ID (soft delete)
-PATCH http://localhost:4000/author-api/articles
+PATCH https://blog-app-ab9f.onrender.com/author-api/articles
 Content-Type: application/json
 
 {

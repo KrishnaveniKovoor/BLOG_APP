@@ -1,11 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router";
-
 import {
   formCard,
   formTitle,
@@ -17,6 +14,9 @@ import {
   loadingClass,
 } from "../styles/common";
 import { useAuth } from "../store/authStore";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 function WriteArticles() {
   const navigate = useNavigate();

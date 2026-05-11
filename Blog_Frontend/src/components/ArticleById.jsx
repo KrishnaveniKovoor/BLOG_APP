@@ -1,9 +1,9 @@
 import { useParams, useLocation, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { toast } from "react-hot-toast";
 import { useAuth } from "../store/authStore";
+
 import {
   articlePageWrapper,
   articleHeader,
@@ -29,6 +29,8 @@ import {
   commentText,
 } from "../styles/common.js";
 import { useForm } from "react-hook-form";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function ArticleByID() {
   const { id } = useParams();

@@ -5,10 +5,23 @@ export const userApp = exp.Router();
 
 //Read articles of all authors
 userApp.get("/articles", verifyToken("USER"), async (req, res) => {
-  //read artcles
+  //read articles
   const articlesList = await ArticleModel.find({ isArticleActive: true });
   //send res
-  res.status(200).json({ message: "artciles", payload: articlesList });
+  res.status(200).json({ message: "articles", payload: articlesList });
+});
+
+//Read single article by id
+userApp.get("/article/:id", verifyToken("USER"), async (req, res, next) => {
+  try {
+    const article = await ArticleModel.findOne({ _id: req.params.id, isArticleActive: true });
+    if (!article) {
+      return res.status(404).json({ message: "Article not found", error: "Article not found or has been deleted" });
+    }
+    res.status(200).json({ message: "article", payload: article });
+  } catch (err) {
+    next(err);
+  }
 });
 
 //Add comment to an article

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
-import UserModel from "../models/UserModel.js";
+import { UserModel } from "../models/UserModel.js";
 
 const { verify } = jwt;
 

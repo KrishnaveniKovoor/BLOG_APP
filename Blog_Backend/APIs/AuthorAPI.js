@@ -13,12 +13,12 @@ authorApp.post("/article", verifyToken("AUTHOR"), async (req, res) => {
   let user = req.user;
   //check author
   let author = await UserModel.findById(articleObj.author);
-  //cross check emails
-  if (author.email != user.email) {
-    return res.status(403).json({ message: "You are not authorized" });
-  }
+  // Check author exists first, then cross-check email
   if (!author) {
     return res.status(404).json({ message: "Invalid author" });
+  }
+  if (author.email !== user.email) {
+    return res.status(403).json({ message: "You are not authorized" });
   }
 
   //create article Document

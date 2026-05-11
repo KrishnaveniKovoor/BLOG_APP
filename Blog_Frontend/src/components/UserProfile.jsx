@@ -1,10 +1,8 @@
 import { useAuth } from "../store/authStore";
 import { useNavigate } from "react-router";
-
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
 import { useEffect, useState } from "react";
+
 
 import {
   articleGrid,
@@ -15,6 +13,8 @@ import {
   errorClass,
   timestampClass,
 } from "../styles/common.js";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function UserProfile() {
   const logout = useAuth((state) => state.logout);
@@ -35,7 +35,7 @@ function UserProfile() {
         });
         //update articles state
         if (res.status === 200) {
-          setArticles((await res).data.payload);
+          setArticles(res.data.payload);
         }
       } catch (err) {
         setError(err.response?.data?.error || "Something went wrong");

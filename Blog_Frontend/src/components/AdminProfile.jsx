@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useAuth } from "../store/authStore";
 
 const API_URL = import.meta.env.VITE_API_URL;
-import { useAuth } from "../store/authStore";
 
 function AdminProfile() {
   const currentUser = useAuth((state) => state.currentUser);
