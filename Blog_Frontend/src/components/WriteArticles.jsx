@@ -35,7 +35,7 @@ function WriteArticles() {
     setLoading(true);
 
     //add authorId to articleObj
-    articleObj.author = currentUser._id;
+    articleObj.author = currentUser.id;
     try {
       //set loading true
       setLoading(true);
