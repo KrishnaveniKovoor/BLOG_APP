@@ -14,8 +14,7 @@ import { useForm } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import { useState } from "react";
 import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { API_URL } from "../config/api";
 
 function Register() {
   const {

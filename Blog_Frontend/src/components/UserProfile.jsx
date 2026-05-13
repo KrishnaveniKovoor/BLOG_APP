@@ -2,7 +2,7 @@ import { useAuth } from "../store/authStore";
 import { useNavigate } from "react-router";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+import { API_URL } from "../config/api";
 
 import {
   articleGrid,
@@ -13,8 +13,6 @@ import {
   errorClass,
   timestampClass,
 } from "../styles/common.js";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 function UserProfile() {
   const logout = useAuth((state) => state.logout);

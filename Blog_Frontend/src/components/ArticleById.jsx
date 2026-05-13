@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../store/authStore";
+import { API_URL } from "../config/api";
 
 import {
   articlePageWrapper,
@@ -29,8 +30,6 @@ import {
   commentText,
 } from "../styles/common.js";
 import { useForm } from "react-hook-form";
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 function ArticleByID() {
   const { id } = useParams();
