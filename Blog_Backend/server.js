@@ -18,7 +18,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "https://blog-app-azure.vercel.app",
   "https://blog-app-git-main-krishkovoor1596-6752s-projects.vercel.app",
-  process.env.FRONTEND_URL
+  "https://blog-rbu5vwyt2-krishkovoor1596-6752s-projects.vercel.app",
+  process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 const isDev = process.env.NODE_ENV !== "production";
