@@ -13,8 +13,26 @@ import ArticleByID from "./components/ArticleById";
 import { Toaster } from "react-hot-toast";
 import Unauthorized from "./components/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
+import axios from "axios";
+import { useAuth } from "./store/authStore";
 
 function App() {
+  const logout = useAuth((state) => state.logout);
+
+  // Set up axios interceptor for 401 errors
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response?.status === 401) {
+        // Token expired or invalid, logout user
+        logout();
+        // Redirect to login
+        window.location.href = "/login";
+      }
+      return Promise.reject(error);
+    }
+  );
+
   const routerObj = createBrowserRouter([
     {
       path: "/",

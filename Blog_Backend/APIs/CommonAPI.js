@@ -110,7 +110,7 @@ commonApp.post("/login", async (req, res, next) => {
     },
     process.env.SECRET_KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "7d",
     },
   );
 
@@ -118,10 +118,11 @@ commonApp.post("/login", async (req, res, next) => {
   res.cookie("token", signedToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
+    sameSite: isProduction ? "none" : false,
   });
   let userObj = user.toObject();
   delete userObj.password;
+  userObj.id = userObj._id;
 
   res.status(200).json({ message: "login success", payload: userObj });
 });
@@ -133,7 +134,7 @@ commonApp.get("/logout", (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
+    sameSite: isProduction ? "none" : false,
   });
   //send res
   res.status(200).json({ message: "Logout success" });
