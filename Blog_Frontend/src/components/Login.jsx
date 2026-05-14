@@ -69,14 +69,18 @@ function Login() {
         <form onSubmit={handleSubmit(onUserLogin)}>
           {/* Email */}
           <div className={formGroup}>
-            <label className={labelClass}>Email</label>
+            <label htmlFor="email" className={labelClass}>
+              Email
+            </label>
             <input
+              id="email"
+              name="email"
               type="email"
               placeholder="you@example.com"
+              autoComplete="email"
               className={inputClass}
               {...register("email", {
                 required: "Email is required",
-
                 validate: (value) => value.trim().length > 0 || "Email cannot be empty",
               })}
             />
@@ -85,10 +89,15 @@ function Login() {
 
           {/* Password */}
           <div className={formGroup}>
-            <label className={labelClass}>Password</label>
+            <label htmlFor="password" className={labelClass}>
+              Password
+            </label>
             <input
+              id="password"
+              name="password"
               type="password"
               placeholder="••••••••"
+              autoComplete="current-password"
               className={inputClass}
               {...register("password", {
                 required: "Password is required",

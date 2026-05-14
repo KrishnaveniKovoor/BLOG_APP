@@ -16,13 +16,18 @@ const app = exp();
 // ===== CORS CONFIGURATION =====
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://blog-app-azure.vercel.app",
-  "https://blog-app-git-main-krishkovoor1596-6752s-projects.vercel.app",
-  "https://blog-rbu5vwyt2-krishkovoor1596-6752s-projects.vercel.app",
   process.env.FRONTEND_URL,
 ].filter(Boolean);
 
 const isDev = process.env.NODE_ENV !== "production";
+
+const isAllowedVercelOrigin = (origin) => {
+  return /^https:\/\/[a-z0-9-]+\.vercel\.app$/.test(origin);
+};
+
+const isAllowedRenderOrigin = (origin) => {
+  return /^https:\/\/[a-z0-9-]+\.onrender\.com$/.test(origin);
+};
 
 app.use(
   cors({
@@ -40,7 +45,11 @@ app.use(
       }
 
       // allow deployed frontend URLs
-      if (allowedOrigins.includes(origin)) {
+      if (
+        allowedOrigins.includes(origin) ||
+        isAllowedVercelOrigin(origin) ||
+        isAllowedRenderOrigin(origin)
+      ) {
         return callback(null, true);
       }
 
