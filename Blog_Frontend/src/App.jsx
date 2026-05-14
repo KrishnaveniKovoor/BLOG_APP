@@ -15,9 +15,16 @@ import Unauthorized from "./components/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
 import axios from "axios";
 import { useAuth } from "./store/authStore";
+import { useEffect } from "react";
 
 function App() {
   const logout = useAuth((state) => state.logout);
+  const checkAuth = useAuth((state) => state.checkAuth);
+
+  // Check authentication on app load
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   // Set up axios interceptor for 401 errors
   axios.interceptors.response.use(

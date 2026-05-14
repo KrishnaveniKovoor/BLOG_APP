@@ -151,17 +151,18 @@ commonApp.get(
       }
 
       const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-      const dbUser = await UserModel.findById(decodedToken.id).select(
-        "role isUserActive",
-      );
+      const dbUser = await UserModel.findById(decodedToken.id).select("-password");
       if (!dbUser || !dbUser.isUserActive) {
         return res.status(200).json({ isAuthenticated: false });
       }
 
+      let userObj = dbUser.toObject();
+      userObj.id = userObj._id;
+
       res.status(200).json({
         isAuthenticated: true,
         message: "authenticated",
-        payload: decodedToken,
+        payload: userObj,
       });
     } catch (err) {
       res.status(200).json({ isAuthenticated: false });

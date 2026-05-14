@@ -98,9 +98,13 @@ export const useAuth = create((set) => ({
         return;
       }
 
-      // other errors
+      // other errors (e.g., network issues)
       console.error("Auth check failed:", err);
-      set({ loading: false });
+      set({
+        currentUser: null,
+        isAuthenticated: false,
+        loading: false,
+      });
     }
   },
 }));
