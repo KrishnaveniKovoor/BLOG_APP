@@ -25,7 +25,7 @@ function App() {
   // Configure axios once on mount
   useEffect(() => {
     if (!API_URL) {
-      console.error("VITE_API_URL is not defined. Please set API_URL in Vercel environment variables.");
+      console.error("VITE_API_URL is not defined. Please set VITE_API_URL in Vercel environment variables.");
       return;
     }
 
@@ -48,6 +48,7 @@ function App() {
 
   // Check authentication on app load
   useEffect(() => {
+    if (!API_URL) return;
     checkAuth();
   }, [checkAuth]);
 

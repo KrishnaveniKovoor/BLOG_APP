@@ -6,38 +6,43 @@ export const useAuth = create((set) => ({
   currentUser: null,
   loading: false,
   isAuthenticated: false,
+  authChecked: false,
   error: null,
   login: async (userCred) => {
-    // const { role, ...userCredObj } = userCredWithRole;
     try {
-      //set loading true
       set({
         loading: true,
         currentUser: null,
         isAuthenticated: false,
         error: null,
       });
-      //make api call
+
+      if (!API_URL) {
+        throw new Error("Missing API URL. Set VITE_API_URL in your frontend environment.");
+      }
+
+      console.debug("Login request to", `${API_URL}/auth/login`);
+
       let res = await axios.post(`${API_URL}/auth/login`, userCred, {
         withCredentials: true,
       });
-      //update state
+
       if (res.status === 200) {
         set({
           currentUser: res.data?.payload,
           loading: false,
           isAuthenticated: true,
+          authChecked: true,
           error: null,
         });
       }
     } catch (err) {
-      console.log("err is ", err);
+      console.error("Login error:", err);
       set({
         loading: false,
         isAuthenticated: false,
         currentUser: null,
-        //error: err,
-        error: err.response?.data?.error || "Login failed",
+        error: err.response?.data?.error || err.message || "Login failed",
       });
     }
   },
@@ -53,6 +58,7 @@ export const useAuth = create((set) => ({
         set({
           currentUser: null,
           isAuthenticated: false,
+          authChecked: true,
           error: null,
           loading: false,
         });
@@ -70,6 +76,11 @@ export const useAuth = create((set) => ({
   checkAuth: async () => {
     try {
       set({ loading: true });
+      if (!API_URL) {
+        throw new Error("Missing API URL for auth check. Set VITE_API_URL in your frontend environment.");
+      }
+
+      console.debug("Auth check request to", `${API_URL}/auth/check-auth`);
       const res = await axios.get(`${API_URL}/auth/check-auth`, {
         withCredentials: true,
       });
@@ -78,12 +89,14 @@ export const useAuth = create((set) => ({
         set({
           currentUser: res.data.payload,
           isAuthenticated: true,
+          authChecked: true,
           loading: false,
         });
       } else {
         set({
           currentUser: null,
           isAuthenticated: false,
+          authChecked: true,
           loading: false,
         });
       }
@@ -103,6 +116,7 @@ export const useAuth = create((set) => ({
       set({
         currentUser: null,
         isAuthenticated: false,
+        authChecked: true,
         loading: false,
       });
     }
