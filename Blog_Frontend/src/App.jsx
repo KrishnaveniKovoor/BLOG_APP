@@ -14,6 +14,7 @@ import { Toaster } from "react-hot-toast";
 import Unauthorized from "./components/Unauthorized";
 import ProtectedRoute from "./components/ProtectedRoute";
 import axios from "axios";
+import { API_URL } from "./config/api";
 import { useAuth } from "./store/authStore";
 import { useEffect } from "react";
 
@@ -21,24 +22,34 @@ function App() {
   const logout = useAuth((state) => state.logout);
   const checkAuth = useAuth((state) => state.checkAuth);
 
+  // Configure axios once on mount
+  useEffect(() => {
+    if (!API_URL) {
+      console.error("VITE_API_URL is not defined. Please set API_URL in Vercel environment variables.");
+      return;
+    }
+
+    axios.defaults.baseURL = API_URL;
+    axios.defaults.withCredentials = true;
+
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          logout();
+          window.location.href = "/login";
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    return () => axios.interceptors.response.eject(interceptor);
+  }, [logout]);
+
   // Check authentication on app load
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
-
-  // Set up axios interceptor for 401 errors
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response?.status === 401) {
-        // Token expired or invalid, logout user
-        logout();
-        // Redirect to login
-        window.location.href = "/login";
-      }
-      return Promise.reject(error);
-    }
-  );
 
   const routerObj = createBrowserRouter([
     {
