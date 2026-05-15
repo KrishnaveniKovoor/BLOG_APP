@@ -21,13 +21,17 @@ export const useAuth = create((set) => ({
         throw new Error("Missing API URL. Set VITE_API_URL in your frontend environment.");
       }
 
-      console.debug("Login request to", `${API_URL}/auth/login`);
+      console.log("[Auth] Login attempt to", `${API_URL}/auth/login`);
 
       let res = await axios.post(`${API_URL}/auth/login`, userCred, {
         withCredentials: true,
       });
 
+      console.log("[Auth] Login response status:", res.status);
+      console.log("[Auth] Login response payload:", res.data?.payload);
+
       if (res.status === 200) {
+        console.log("[Auth] Setting authenticated state");
         set({
           currentUser: res.data?.payload,
           loading: false,
@@ -37,7 +41,7 @@ export const useAuth = create((set) => ({
         });
       }
     } catch (err) {
-      console.error("Login error:", err);
+      console.error("[Auth] Login error:", err);
       set({
         loading: false,
         isAuthenticated: false,
@@ -80,12 +84,15 @@ export const useAuth = create((set) => ({
         throw new Error("Missing API URL for auth check. Set VITE_API_URL in your frontend environment.");
       }
 
-      console.debug("Auth check request to", `${API_URL}/auth/check-auth`);
+      console.log("[Auth] Checking authentication...");
       const res = await axios.get(`${API_URL}/auth/check-auth`, {
         withCredentials: true,
       });
 
+      console.log("[Auth] Check-auth response:", res.data);
+
       if (res.data.isAuthenticated) {
+        console.log("[Auth] User is authenticated:", res.data.payload);
         set({
           currentUser: res.data.payload,
           isAuthenticated: true,
@@ -93,6 +100,7 @@ export const useAuth = create((set) => ({
           loading: false,
         });
       } else {
+        console.log("[Auth] User is not authenticated");
         set({
           currentUser: null,
           isAuthenticated: false,
@@ -103,16 +111,18 @@ export const useAuth = create((set) => ({
     } catch (err) {
       // If user is not logged in → do nothing
       if (err.response?.status === 401) {
+        console.log("[Auth] Received 401 on check-auth");
         set({
           currentUser: null,
           isAuthenticated: false,
+          authChecked: true,
           loading: false,
         });
         return;
       }
 
       // other errors (e.g., network issues)
-      console.error("Auth check failed:", err);
+      console.error("[Auth] Check-auth failed:", err);
       set({
         currentUser: null,
         isAuthenticated: false,

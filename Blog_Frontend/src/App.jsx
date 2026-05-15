@@ -29,13 +29,20 @@ function App() {
       return;
     }
 
+    console.log("[App] Setting up axios with API_URL:", API_URL);
+
     axios.defaults.baseURL = API_URL;
     axios.defaults.withCredentials = true;
 
     const interceptor = axios.interceptors.response.use(
-      (response) => response,
+      (response) => {
+        console.log("[Interceptor] Success response from", response.config.url);
+        return response;
+      },
       (error) => {
+        console.log("[Interceptor] Error response from", error.config?.url, "Status:", error.response?.status);
         if (error.response?.status === 401) {
+          console.log("[Interceptor] Got 401, logging out...");
           logout();
           window.location.href = "/login";
         }
@@ -49,8 +56,10 @@ function App() {
   // Check authentication on app load
   useEffect(() => {
     if (!API_URL) return;
+    console.log("[App] App mounted, checking auth...");
     checkAuth();
-  }, [checkAuth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const routerObj = createBrowserRouter([
     {
