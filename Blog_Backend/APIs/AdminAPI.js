@@ -76,4 +76,5 @@ adminApp.get("/dashboard", verifyToken("ADMIN"), async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+  
 });
