@@ -54,8 +54,7 @@ function ArticleByID() {
 
       try {
         const res = await axios.get(
-          `${API_URL}/user-api/article/${id}`,
-          { withCredentials: true },
+          `${API_URL}/auth/article/${id}`,
         );
 
         setArticle(res.data.payload);

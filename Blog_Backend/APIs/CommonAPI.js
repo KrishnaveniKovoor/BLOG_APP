@@ -1,5 +1,6 @@
 import exp from "express";
 import { UserModel } from "../models/UserModel.js";
+import { ArticleModel } from "../models/ArticleModel.js";
 import { hash, compare } from "bcryptjs";
 import { config } from "dotenv";
 import jwt from "jsonwebtoken";
@@ -250,3 +251,31 @@ commonApp.put(
     }
   },
 );
+
+// Public route — no auth required
+// Returns all active/published articles for the home page
+commonApp.get("/articles", async (req, res, next) => {
+  try {
+    const articles = await ArticleModel.find({ isArticleActive: true }).sort({ createdAt: -1 });
+    res.status(200).json({ message: "articles", payload: articles });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Public route — no auth required
+// Returns a single active article by ID for the article detail page
+commonApp.get("/article/:id", async (req, res, next) => {
+  try {
+    const article = await ArticleModel.findOne({
+      _id: req.params.id,
+      isArticleActive: true,
+    });
+    if (!article) {
+      return res.status(404).json({ message: "Article not found", error: "Article not found or has been deleted" });
+    }
+    res.status(200).json({ message: "article", payload: article });
+  } catch (err) {
+    next(err);
+  }
+});
